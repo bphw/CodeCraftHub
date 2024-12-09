@@ -1,0 +1,23 @@
+version: '3.8'  # Specify the Docker Compose version
+
+services:
+  app:
+    build: .  # Build the Dockerfile in the current directory
+    ports:
+      - "5000:5000"  # Map port 5000 of the container to port 5000 on the host
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/yourdbname  # MongoDB connection string
+      - JWT_SECRET=07b98b712348e883506dd688ac906fe4953c5aa7aa125136bcca47cd73b02b9b  # JWT secret for authentication
+      - PORT=5000  # Application port
+    depends_on:
+      - mongo  # Ensure MongoDB starts before the app
+
+  mongo:
+    image: mongo:latest  # Use the latest MongoDB image
+    ports:
+      - "27017:27017"  # Map MongoDB port
+    volumes:
+      - mongo-data:/data/db  # Persist MongoDB data
+
+volumes:
+  mongo-data:  # Define a volume for MongoDB data persistence

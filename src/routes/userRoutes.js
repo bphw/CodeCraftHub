@@ -1,19 +1,16 @@
-const express = require('express');
-const { registerUser, loginUser } = require('../controllers/userController');
-const authMiddleware = require('../middleware/authMiddleware');
-const router = express.Router();
+const express = require('express'); // Import the express library
+const router = express.Router(); // Create a new router instance
+const userController = require('../controllers/userController'); // Import user controller
+const authMiddleware = require('../middlewares/authMiddleware'); // Import authentication middleware
 
-// Register a new user
-router.post('/register', registerUser);
+// Route for user registration
+router.post('/register', userController.registerUser);
 
-// Login an existing use
-router.post('/login', loginUser);
+// Route for user login
+router.post('/login', userController.loginUser);
 
-// Update user profile (protected route)
-router.put('/:id', authMiddleware, userController.updateUserProfile);
+// Route for updating user profile by user ID (protected by authentication)
+router.put('/:userId', authMiddleware, userController.updateUserProfile);
 
-// Optional: Add more routes for getting user profile, deleting user, etc.
-// router.get('/:id', authMiddleware, userController.getUserProfile);
-// router.delete('/:id', authMiddleware, userController.
-
+// Export the router to be used in the main app
 module.exports = router;
